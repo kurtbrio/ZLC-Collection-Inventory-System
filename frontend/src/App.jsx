@@ -10,6 +10,7 @@ import ViewProduct from "./pages/Products/ViewProduct";
 import UpdateProduct from "./pages/Products/UpdateProduct";
 import Sales from "./pages/Sales/Sales";
 import AddSale from "./pages/Sales/AddSale";
+import ViewSale from "./pages/Sales/ViewSale";
 import Reports from "./pages/Reports/Reports";
 
 axios.defaults.withCredentials = true;
@@ -19,17 +20,20 @@ function App() {
   return (
     <>
       <Toaster position="bottom-center" toastOptions={{ duration: 2000 }} />
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/add" element={<AddProduct />} />
-        <Route path="/products/:id" element={<ViewProduct />} />
-        <Route path="/products/update/:id" element={<UpdateProduct />} />
-        <Route path="/sales" element={<Sales />} />
-        <Route path="/sales/add" element={<AddSale />} />
-        <Route path="/reports" element={<Reports />} />
-      </Routes>
+      <div className="bg-main-bg h-screen overflow-hidden">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/products/add" element={<AddProduct />} />
+          <Route path="/products/:id" element={<ViewProduct />} />
+          <Route path="/products/update/:id" element={<UpdateProduct />} />
+          <Route path="/sales" element={<Sales />} />
+          <Route path="/sales/add" element={<AddSale />} />
+          <Route path="/sales/:id" element={<ViewSale />} />
+          <Route path="/reports" element={<Reports />} />
+        </Routes>
+      </div>
     </>
   );
 }

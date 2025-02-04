@@ -1,0 +1,7 @@
+#login-container {
+  background: url("../../assets/login-bg.jpg") no-repeat fixed top,
+    rgba(0, 0, 0, 0.1);
+  background-blend-mode: overlay;
+  @apply w-screen h-screen flex justify-center
+    items-center;
+}

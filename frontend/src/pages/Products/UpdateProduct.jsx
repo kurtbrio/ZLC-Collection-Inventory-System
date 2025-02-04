@@ -27,7 +27,7 @@ const UpdateProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`api/products/${id}`);
+        const res = await axios.get(`/api/products/${id}`);
         setProduct(res.data.product);
         setNewImageUrl(null);
       } catch (error) {

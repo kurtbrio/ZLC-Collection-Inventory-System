@@ -12,6 +12,21 @@ exports.getSales = async (req, res) => {
   }
 };
 
+exports.getSale = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sale = await Sales.findById(id);
+
+    if (!sale) {
+      return res.json({ error: "Sale not found" });
+    }
+
+    return res.status(200).json({ sale });
+  } catch (error) {
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
 exports.addSale = async (req, res) => {
   try {
     const { productId, sizes, totalPrice, date } = req.body;

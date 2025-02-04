@@ -2,6 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -34,35 +37,55 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen py-20 text-center text-primary-500 ]">
-      <form onSubmit={handleSubmit}>
-        <h1>
-          Z<span className="text-secondary-500">L</span>C COLLECTION
+    <div className="p-5" id="login-container">
+      <form
+        onSubmit={handleSubmit}
+        className="py-10 px-5  backdrop-blur-xs bg-main-bg/50 shadow-black shadow-xl border-[0.5px] rounded-md border-white/20"
+      >
+        <h1 className="text-5xl text-center pb-10 font-medium">
+          <span className="block">
+            Z<span className="text-highlight">L</span>C
+          </span>
+          COLLECTION
         </h1>
 
-        <div className="">
-          <input
-            className="rounded-full bg-secondary-700 py-2 px-2 mt-5"
-            type="email"
-            name="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+        <div className="flex flex-col gap-5">
+          <div className="relative">
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className=" relative placeholder:text-primary w-full"
+              autoComplete="off"
+            />
+            <FontAwesomeIcon
+              icon={faEnvelope}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 "
+            />
+          </div>
 
-          <input
-            className="rounded-full bg-secondary-700 py-2 px-1.5 mt-2.5"
-            type="password"
-            name="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="relative">
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className=" placeholder:text-primary w-full"
+            />
+            <FontAwesomeIcon
+              icon={faLock}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 "
+            />
+          </div>
         </div>
 
         <button
-          className="rounded-full bg-secondary-200 py-2 px-1.5 min-h-10 min-w-52 mt-5"
+          className="mt-5 bg-bg-primary w-full"
           type="submit"
+          id="btn-primary"
         >
           Login
         </button>

@@ -1,159 +1,76 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
 
-:root {
-  --primary-100: #d8d8d8;
-  --primary-200: #b0b0b0;
-  --primary-300: #898989;
-  --primary-400: #616161;
-  --primary-500: #3a3a3a;
-  --primary-600: #2e2e2e;
-  --primary-700: #232323;
-  --primary-800: #171717;
-  --primary-900: #0c0c0c;
+@import "tailwindcss";
 
-  --secondary-100: #efece6;
-  --secondary-200: #dedacd;
-  --secondary-300: #cec7b4;
-  --secondary-400: #bdb59b;
-  --secondary-500: #ada282;
-  --secondary-600: #8a8268;
-  --secondary-700: #68614e;
-  --secondary-800: #454134;
-  --secondary-900: #23201a;
+@theme {
+  --color-primary: #f1f1f1;
+
+  --color-main-bg: #1f1f21;
+  --color-container-bg: #161618;
+  --color-highlight: #ada282;
+
+  --font-primary: "Geist", serif;
 }
 
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
+/* MUI */
+.MuiTableCell-root,
+.Mui-active,
+.MuiSvgIcon-root,
+.MuiToolbar-root {
+  color: #f1f1f1 !important;
 }
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
+
+.MuiButtonBase-root:hover {
+  color: #ada282 !important;
 }
+
+.MuiTypography-root {
+  color: #f1f1f1 !important;
+  text-decoration: none !important;
+  border: 0.5px solid hsla(0, 0%, 95%, 25%);
+  padding: 5px 20px;
+  border-radius: 50px;
+}
+
+.MuiTypography-root:hover {
+  color: #ada282 !important;
+  border-color: #ada282;
+}
+
+/* GLOBAL */
+* {
+  @apply ease-in-out delay-75 transition-all;
+}
+
 body {
-  line-height: 1;
-}
-ol,
-ul {
-  list-style: none;
-}
-blockquote,
-q {
-  quotes: none;
-}
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: "";
-  content: none;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
+  @apply font-primary text-primary;
 }
 
-h1 {
-  font-size: 3rem;
+input {
+  @apply py-1.5 px-5 rounded-full border-[1px] border-white/10;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+input:focus {
+  @apply outline-0;
+}
+
+button {
+  @apply text-primary;
+}
+
+/* REUSABLE */
+#btn-primary {
+  @apply cursor-pointer  py-1.5 rounded-full font-semibold hover:text-primary/80 border-white/20 border-[0.5px];
+}
+
+#container {
+  @apply w-screen max-h-screen overflow-y-scroll bg-container-bg/75 rounded-t-xl lg:rounded-t-none lg:rounded-tl-xl p-5 lg:pb-10 border-white/20 lg:border-[0.5px];
+}
+
+#full {
+  @apply flex flex-col lg:flex-row lg:pt-10 bg-gradient-to-br from-container-bg to-highlight/30 lg:bg-main-bg;
+}
+
+#grid-item {
+  @apply flex justify-center items-center p-2.5 border-white/20 lg:border-[0.5px] rounded-xl bg-main-bg h-72;
 }

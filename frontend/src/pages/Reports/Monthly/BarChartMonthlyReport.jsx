@@ -3,7 +3,7 @@ import { Chart as ChartJS } from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
 
-const SalesMonthlyDailyReports = ({ date }) => {
+const BarChartMonthlyReport = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
 
   const fetchSalesReport = async () => {
@@ -11,8 +11,8 @@ const SalesMonthlyDailyReports = ({ date }) => {
       const [year, month] = date.split("-");
 
       const response = await axios.post("/api/reports/monthly-daily", {
-        year: parseInt(year),
-        month: parseInt(month),
+        year: parseInt(year, 10),
+        month: parseInt(month, 10),
       });
 
       const data = response.data.reports;
@@ -23,6 +23,7 @@ const SalesMonthlyDailyReports = ({ date }) => {
           {
             label: "Sales",
             data: data.map((report) => report.dailySale),
+            backgroundColor: "#ada282",
           },
         ],
       });
@@ -35,10 +36,15 @@ const SalesMonthlyDailyReports = ({ date }) => {
     fetchSalesReport();
   }, [date]);
 
+  const options = {
+    maintainAspectRatio: false,
+    responsive: true,
+  };
+
   return (
-    <div className="report-chart">
+    <div className="h-full w-full">
       {chartData.labels.length > 0 ? (
-        <Bar data={chartData} />
+        <Bar data={chartData} options={options} />
       ) : (
         <p>No data available</p>
       )}
@@ -46,4 +52,4 @@ const SalesMonthlyDailyReports = ({ date }) => {
   );
 };
 
-export default SalesMonthlyDailyReports;
+export default BarChartMonthlyReport;

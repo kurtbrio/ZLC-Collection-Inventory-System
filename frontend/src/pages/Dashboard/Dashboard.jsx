@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Drawer, Button, Box } from "@mui/material";
+import React, { useState } from "react";
 import authVerification from "../../custom-hooks/authVerification";
 import Hamburger from "../../components/Sidebar/Hamburger";
-import SalesMonthlyDailyReports from "../Reports/SalesMonthlyDailyReports";
+import BarChartMonthlyReport from "../Reports/Monthly/BarChartMonthlyReport";
 
 const Dashboard = () => {
   authVerification();
@@ -11,20 +9,16 @@ const Dashboard = () => {
 
   return (
     <>
-      {/* DRAWER */}
-      <Hamburger />
+      <div id="full">
+        <Hamburger />
+        <div id="container">
+          <h1 className="text-xl">Dashboard</h1>
 
-      {/* DASHBOARD */}
-      <Box>
-        <h1>Dashboarddddddddddddddd</h1>
-
-        <div
-          className="sales-monthly-report"
-          style={{ width: "500px", height: "500px" }}
-        >
-          <SalesMonthlyDailyReports date={date} />
+          <div>
+            <BarChartMonthlyReport date={date} />
+          </div>
         </div>
-      </Box>
+      </div>
     </>
   );
 };

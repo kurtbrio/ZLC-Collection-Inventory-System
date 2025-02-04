@@ -110,92 +110,94 @@ const AddSale = () => {
 
   return (
     <>
-      <Hamburger />
+      <div id="full">
+        <Hamburger />
 
-      <Box>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Select Product:</label>
+        <Box id="container">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Select Product:</label>
 
-            <select
-              value={selectedProduct?._id || ""}
-              onChange={handleSelectedProduct}
-            >
-              <option value="" disabled>
-                Select a product
-              </option>
-              {products.map((product) => (
-                <option key={product._id} value={product._id}>
-                  {product.name}
+              <select
+                value={selectedProduct?._id || ""}
+                onChange={handleSelectedProduct}
+              >
+                <option value="" disabled>
+                  Select a product
                 </option>
-              ))}
-            </select>
-          </div>
+                {products.map((product) => (
+                  <option key={product._id} value={product._id}>
+                    {product.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {selectedProduct && (
-            <>
-              <div className="product-info">
-                <div className="product-img">
-                  <img
-                    src={`http://localhost:4000/${selectedProduct.imageUrl}`}
-                    style={{ width: "200px", height: "200px" }}
+            {selectedProduct && (
+              <>
+                <div className="product-info">
+                  <div className="product-img">
+                    <img
+                      src={`http://localhost:4000/${selectedProduct.imageUrl}`}
+                      style={{ width: "200px", height: "200px" }}
+                    />
+                  </div>
+                  <h1>{selectedProduct.name}</h1>
+                </div>
+
+                <div className="form-group">
+                  <label>Sizes stock</label>
+
+                  {saleSize.map((size, index) => (
+                    <div key={index} className="size-group">
+                      <label>{size.size}: </label>
+                      <Button
+                        type="button"
+                        onClick={() => handleDecrement(index)}
+                        disabled={size.quantity <= 0}
+                      >
+                        -
+                      </Button>
+                      <input
+                        type="number"
+                        value={size.quantity}
+                        onChange={(e) =>
+                          handleSizeChange(index, parseInt(e.target.value) || 0)
+                        }
+                        min={0}
+                        disabled
+                        style={{ width: "20px", textAlign: "center" }}
+                      />
+                      <Button
+                        type="button"
+                        onClick={() => handleIncrement(index)}
+                        disabled={
+                          size.quantity == selectedProduct.sizes[index].quantity
+                        }
+                      >
+                        +
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="form-group">
+                  <label>Date:</label>
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
                   />
                 </div>
-                <h1>{selectedProduct.name}</h1>
-              </div>
 
-              <div className="form-group">
-                <label>Sizes stock</label>
-
-                {saleSize.map((size, index) => (
-                  <div key={index} className="size-group">
-                    <label>{size.size}: </label>
-                    <Button
-                      type="button"
-                      onClick={() => handleDecrement(index)}
-                      disabled={size.quantity <= 0}
-                    >
-                      -
-                    </Button>
-                    <input
-                      type="number"
-                      value={size.quantity}
-                      onChange={(e) =>
-                        handleSizeChange(index, parseInt(e.target.value) || 0)
-                      }
-                      min={0}
-                      disabled
-                      style={{ width: "20px", textAlign: "center" }}
-                    />
-                    <Button
-                      type="button"
-                      onClick={() => handleIncrement(index)}
-                      disabled={
-                        size.quantity == selectedProduct.sizes[index].quantity
-                      }
-                    >
-                      +
-                    </Button>
-                  </div>
-                ))}
-              </div>
-
-              <div className="form-group">
-                <label>Date:</label>
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                />
-              </div>
-
-              <button type="submit" disabled={isAllZero}>
-                Submit Sale
-              </button>
-            </>
-          )}
-        </form>
-      </Box>
+                <button type="submit" disabled={isAllZero}>
+                  Submit Sale
+                </button>
+              </>
+            )}
+          </form>
+        </Box>
+      </div>
     </>
   );
 };
