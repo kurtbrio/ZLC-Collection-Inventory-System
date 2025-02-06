@@ -16,6 +16,8 @@ const BarChartMonthlyReport = ({ date }) => {
       });
 
       const data = response.data.reports;
+      ////////////////////////
+      console.log(response);
 
       setChartData({
         labels: data.map((report) => report.date),

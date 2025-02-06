@@ -44,39 +44,12 @@ const ViewProduct = () => {
 
   return (
     <>
-      <Hamburger />
+      <div id="full">
+        <Hamburger />
 
-      <Button
-        onClick={() => {
-          navigate("/products");
-        }}
-      >
-        Go Back..
-      </Button>
-      <div>{product.name}</div>
-      <div>{product.price}</div>
-      <div>{product.category}</div>
-      <div>{product.type}</div>
-      <div>
-        {product.sizes.map((size) => (
-          <div key={size._id}>
-            {size.size}: {size.quantity}
-          </div>
-        ))}
-      </div>
-      <div>{product.gender}</div>
-      <div>{product.date}</div>
-      <div>
-        <img
-          src={`http://localhost:4000/${product.imageUrl}`}
-          alt={product.name}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            borderRadius: "5px",
-          }}
-        />
+        <div id="container">
+          <h1>{product.name}</h1>
+        </div>
       </div>
     </>
   );

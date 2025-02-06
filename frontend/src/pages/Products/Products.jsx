@@ -88,7 +88,7 @@ const Products = () => {
     product.sizes.forEach((size) => {
       totalQuantity += size.quantity;
     });
-    return currencyFormatter(totalQuantity * product.price);
+    return totalQuantity * product.price;
   };
 
   const handleChangePage = (event, newPage) => {
@@ -115,9 +115,9 @@ const Products = () => {
 
   return (
     <>
-      <div id="full">
+      <div className="full">
         <Hamburger />
-        <Box id="container">
+        <Box className="container">
           <Link href="/products/add">Add Product</Link>
 
           <TableContainer className="product-table">
@@ -125,18 +125,6 @@ const Products = () => {
               <TableHead>
                 <TableRow>
                   <TableCell align="center">Image</TableCell>
-                  <TableCell
-                    align="center"
-                    sortDirection={orderBy === "id" ? order : false}
-                  >
-                    <TableSortLabel
-                      active={orderBy === "id"}
-                      direction={orderBy === "id" ? order : "asc"}
-                      onClick={(event) => handleRequestSort(event, "id")}
-                    >
-                      ID
-                    </TableSortLabel>
-                  </TableCell>
                   <TableCell
                     align="center"
                     sortDirection={orderBy === "name" ? order : false}
@@ -220,18 +208,18 @@ const Products = () => {
                           minHeight: "130px",
                         }}
                       >
-                        <img
-                          src={`http://localhost:4000/${product.imageUrl}`}
-                          alt={product.name}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            borderRadius: "5px",
-                          }}
-                        />
+                        {product.imageUrl ? (
+                          <img
+                            src={`http://localhost:4000/${product.imageUrl}`}
+                            alt={product.name}
+                            className="w-full h-full object-cover rounded-xl border-highlight
+                             border-2"
+                          />
+                        ) : (
+                          "No Image"
+                        )}
                       </TableCell>
-                      <TableCell align="center">{product._id}</TableCell>
+
                       <TableCell align="center">{product.name}</TableCell>
                       <TableCell align="center">{product.gender}</TableCell>
                       <TableCell align="center">{product.category}</TableCell>
@@ -240,9 +228,16 @@ const Products = () => {
                         {currencyFormatter(product.price)}
                       </TableCell>
                       <TableCell align="center">
-                        {totalValue(product)}
+                        {totalValue(product) === 0 ? (
+                          <p className="text-red-700">Out of Stock</p>
+                        ) : (
+                          currencyFormatter(totalValue(product))
+                        )}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell
+                        align="center"
+                        className="flex whitespace-nowrap"
+                      >
                         <Button onClick={() => navigate(`${product._id}`)}>
                           <Visibility />
                         </Button>

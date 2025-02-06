@@ -10,9 +10,9 @@ const MonthlyReport = () => {
 
   return (
     <>
-      <div id="full">
+      <div className="full">
         <Hamburger />
-        <div id="container">
+        <div className="container">
           <div className="flex flex-col gap-5">
             <form className="flex items-center gap-5">
               <label>Monthly</label>

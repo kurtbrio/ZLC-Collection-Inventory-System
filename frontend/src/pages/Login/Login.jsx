@@ -42,12 +42,12 @@ const Login = () => {
         onSubmit={handleSubmit}
         className="py-10 px-5  backdrop-blur-xs bg-main-bg/50 shadow-black shadow-xl border-[0.5px] rounded-md border-white/20"
       >
-        <h1 className="text-5xl text-center pb-10 font-medium">
+        <div className="text-5xl text-center pb-10 font-medium">
           <span className="block">
             Z<span className="text-highlight">L</span>C
           </span>
           COLLECTION
-        </h1>
+        </div>
 
         <div className="flex flex-col gap-5">
           <div className="relative">
@@ -82,11 +82,7 @@ const Login = () => {
           </div>
         </div>
 
-        <button
-          className="mt-5 bg-bg-primary w-full"
-          type="submit"
-          id="btn-primary"
-        >
+        <button className="mt-5 btn-primary w-full" type="submit">
           Login
         </button>
       </form>

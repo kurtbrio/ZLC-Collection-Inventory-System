@@ -117,13 +117,13 @@ const Sales = () => {
 
   return (
     <>
-      <div id="full">
+      <div className="full">
         <Hamburger />
         <Box
           sx={{
             width: "100vw",
           }}
-          id="container"
+          className="container"
         >
           <Link href="sales/add">Add Sales</Link>
           <TableContainer

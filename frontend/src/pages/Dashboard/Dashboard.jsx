@@ -9,9 +9,9 @@ const Dashboard = () => {
 
   return (
     <>
-      <div id="full">
+      <div className="full">
         <Hamburger />
-        <div id="container">
+        <div className="container">
           <h1 className="text-xl">Dashboard</h1>
 
           <div>

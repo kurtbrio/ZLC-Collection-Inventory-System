@@ -6,6 +6,7 @@ import authVerification from "../../custom-hooks/authVerification";
 import { produce } from "immer";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Hamburger from "../../components/Sidebar/Hamburger";
 
 const UpdateProduct = () => {
   authVerification();
@@ -90,91 +91,94 @@ const UpdateProduct = () => {
 
   return (
     <>
-      <Box>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Name: </label>
-            <input
-              type="text"
-              name="name"
-              value={product.name}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>&#8369;:</label>
-            <input
-              type="number"
-              name="price"
-              value={product.price}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Category: </label>
-            <select
-              name="category"
-              value={product.category}
-              onChange={handleChange}
-            >
-              <option value="Kids">Kids</option>
-              <option value="Adult">Adult</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Type: </label>
-            <select name="type" value={product.type} onChange={handleChange}>
-              <option value="Shirt">Shirt</option>
-              <option value="Shorts">Shorts</option>
-              <option value="Pants">Pants</option>
-              <option value="Dress">Dress</option>
-              <option value="Jacket">Jacket</option>
-              <option value="Set">Set</option>
-            </select>
-          </div>
-          <div className="form-group">
-            {product.sizes.map((size, index) => (
-              <div key={index} className="size-group">
-                <label>{size.size}</label>
-                <input
-                  name="quantity"
-                  type="number"
-                  value={size.quantity}
-                  onChange={(e) => handleSizeChange(index, e)}
-                />
-              </div>
-            ))}
-          </div>
-          <div className="form-group">
-            <label>Gender: </label>
-            <select value={product.gender} onChange={handleChange}>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Unisex">Unisex</option>
-            </select>
-          </div>
+      <div className="full">
+        <Hamburger />
+        <Box className="container">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Name: </label>
+              <input
+                type="text"
+                name="name"
+                value={product.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>&#8369;:</label>
+              <input
+                type="number"
+                name="price"
+                value={product.price}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>Category: </label>
+              <select
+                name="category"
+                value={product.category}
+                onChange={handleChange}
+              >
+                <option value="Kids">Kids</option>
+                <option value="Adult">Adult</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Type: </label>
+              <select name="type" value={product.type} onChange={handleChange}>
+                <option value="Shirt">Shirt</option>
+                <option value="Shorts">Shorts</option>
+                <option value="Pants">Pants</option>
+                <option value="Dress">Dress</option>
+                <option value="Jacket">Jacket</option>
+                <option value="Set">Set</option>
+              </select>
+            </div>
+            <div className="form-group">
+              {product.sizes.map((size, index) => (
+                <div key={index} className="size-group">
+                  <label>{size.size}</label>
+                  <input
+                    name="quantity"
+                    type="number"
+                    value={size.quantity}
+                    onChange={(e) => handleSizeChange(index, e)}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="form-group">
+              <label>Gender: </label>
+              <select value={product.gender} onChange={handleChange}>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Unisex">Unisex</option>
+              </select>
+            </div>
 
-          <div
-            className="form-group"
-            style={{ width: "200px", height: "200px" }}
-          >
-            <img
-              src={`http://localhost:4000/${product.imageUrl}`}
-              alt=""
-              style={{ width: "100%", height: "100%" }}
-            />
-          </div>
-          <div className="form-group">
-            <label>Upload Image: </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setNewImageUrl(e.target.files[0])}
-            />
-          </div>
-          <button type="submit">Submit</button>
-        </form>
-      </Box>
+            <div
+              className="form-group"
+              style={{ width: "200px", height: "200px" }}
+            >
+              <img
+                src={`http://localhost:4000/${product.imageUrl}`}
+                alt=""
+                style={{ width: "100%", height: "100%" }}
+              />
+            </div>
+            <div className="form-group">
+              <label>Upload Image: </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setNewImageUrl(e.target.files[0])}
+              />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </Box>
+      </div>
     </>
   );
 };

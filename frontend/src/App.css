@@ -24,12 +24,24 @@
   color: #ada282 !important;
 }
 
+.MuiButton-root {
+  font-size: 1.5rem !important;
+  color: #f1f1f1 !important;
+}
+
+.MuiButton-root:hover {
+  color: #ada282 !important;
+  background-color: transparent !important;
+}
+
 .MuiTypography-root {
   color: #f1f1f1 !important;
   text-decoration: none !important;
   border: 0.5px solid hsla(0, 0%, 95%, 25%);
   padding: 5px 20px;
   border-radius: 50px;
+  cursor: pointer;
+  width: fit-content;
 }
 
 .MuiTypography-root:hover {
@@ -46,6 +58,18 @@ body {
   @apply font-primary text-primary;
 }
 
+select {
+  @apply p-1.5 border-[0.5px] rounded-full border-white/10 cursor-pointer;
+}
+
+label {
+  @apply font-medium;
+}
+
+h1 {
+  @apply text-xl;
+}
+
 input {
   @apply py-1.5 px-5 rounded-full border-[1px] border-white/10;
 }
@@ -55,22 +79,36 @@ input:focus {
 }
 
 button {
-  @apply text-primary;
+  @apply text-primary cursor-pointer;
+}
+
+option {
+  @apply text-container-bg;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="file"] {
+  cursor: pointer;
 }
 
 /* REUSABLE */
-#btn-primary {
-  @apply cursor-pointer  py-1.5 rounded-full font-semibold hover:text-primary/80 border-white/20 border-[0.5px];
+.btn-primary {
+  @apply cursor-pointer py-1.5 rounded-full font-semibold hover:text-primary/80 border-white/20 border-[0.5px];
 }
 
-#container {
+.container {
   @apply w-screen max-h-screen overflow-y-scroll bg-container-bg/75 rounded-t-xl lg:rounded-t-none lg:rounded-tl-xl p-5 lg:pb-10 border-white/20 lg:border-[0.5px];
 }
 
-#full {
+.full {
   @apply flex flex-col lg:flex-row lg:pt-10 bg-gradient-to-br from-container-bg to-highlight/30 lg:bg-main-bg;
 }
 
-#grid-item {
+.grid-item {
   @apply flex justify-center items-center p-2.5 border-white/20 lg:border-[0.5px] rounded-xl bg-main-bg h-72;
 }
