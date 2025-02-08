@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import authVerification from "../../../custom-hooks/authVerification";
 import Hamburger from "../../../components/Sidebar/Hamburger";
 import BarChartMonthlyReport from "./BarChartMonthlyReport";
-import CompareMonthlyReport from "./CompareMonthlyReport";
+import MonthlySaleComparison from "./MonthlySaleComparison";
+import MonthlySaleByType from "./MonthlySaleByType";
 
 const MonthlyReport = () => {
-  authVerification();
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 7));
 
   return (
@@ -24,11 +23,14 @@ const MonthlyReport = () => {
             </form>
 
             <div className="grid grid-cols-3 gap-5 pb-10">
-              <div className="col-span-3 lg:col-span-2" id="grid-item">
+              <div className="grid-item col-span-3">
                 <BarChartMonthlyReport date={date} />
               </div>
-              <div className="col-span-3 lg:col-span-1 " id="grid-item">
-                <CompareMonthlyReport date={date} />
+              <div className="grid-item col-span-3 lg:col-span-1">
+                <MonthlySaleComparison date={date} />
+              </div>
+              <div className="grid-item col-span-3 lg:col-span-2">
+                <MonthlySaleByType date={date} />
               </div>
             </div>
           </div>

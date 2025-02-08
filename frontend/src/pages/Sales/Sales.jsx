@@ -15,11 +15,9 @@ import {
   TablePagination,
   TableSortLabel,
 } from "@mui/material";
-import authVerification from "../../custom-hooks/authVerification";
 import { DeleteOutline, Visibility } from "@mui/icons-material";
 import toast from "react-hot-toast";
 
-// Sort function to compare values
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -37,7 +35,6 @@ const getComparator = (order, orderBy) => {
 };
 
 const Sales = () => {
-  authVerification();
   const navigate = useNavigate();
 
   const [sales, setSales] = useState([]);

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import authVerification from "../../custom-hooks/authVerification";
 import Hamburger from "../../components/Sidebar/Hamburger";
 import {
   Box,
@@ -36,7 +35,6 @@ const getComparator = (order, orderBy) => {
 };
 
 const Products = () => {
-  authVerification();
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);

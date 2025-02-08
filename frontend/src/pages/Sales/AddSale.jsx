@@ -2,12 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Button, Link } from "@mui/material";
 import { toast } from "react-hot-toast";
-import authVerification from "../../custom-hooks/authVerification";
 import Hamburger from "../../components/Sidebar/Hamburger";
 
 const AddSale = () => {
-  authVerification();
-
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [saleSize, setSaleSize] = useState([]);

@@ -3,7 +3,7 @@ import { Chart as ChartJS } from "chart.js/auto";
 import { Pie } from "react-chartjs-2";
 import axios from "axios";
 
-const CompareMonthlyReport = ({ date }) => {
+const MonthlySaleComparison = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
 
   const getPreviousMonth = (currentDate) => {
@@ -25,23 +25,23 @@ const CompareMonthlyReport = ({ date }) => {
       const [year, month] = date.split("-");
       const [prevYear, prevMonth] = prevDate.split("-");
 
-      const responseCurrent = await axios.post("/api/reports/monthly-daily", {
+      const responseCurrent = await axios.post("/api/reports/monthly", {
         year: parseInt(year, 10),
         month: parseInt(month, 10),
       });
 
-      const responsePrevious = await axios.post("/api/reports/monthly-daily", {
+      const responsePrevious = await axios.post("/api/reports/monthly", {
         year: parseInt(prevYear, 10),
         month: parseInt(prevMonth, 10),
       });
 
       const currentMonthSales = responseCurrent.data.reports.reduce(
-        (total, report) => total + report.dailySale,
+        (total, report) => total + report.totalSale,
         0
       );
 
       const previousMonthSales = responsePrevious.data.reports.reduce(
-        (total, report) => total + report.dailySale,
+        (total, report) => total + report.totalSale,
         0
       );
 
@@ -88,4 +88,4 @@ const CompareMonthlyReport = ({ date }) => {
   );
 };
 
-export default CompareMonthlyReport;
+export default MonthlySaleComparison;

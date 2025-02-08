@@ -10,21 +10,21 @@ const BarChartMonthlyReport = ({ date }) => {
     try {
       const [year, month] = date.split("-");
 
-      const response = await axios.post("/api/reports/monthly-daily", {
+      const response = await axios.post("/api/reports/monthly", {
         year: parseInt(year, 10),
         month: parseInt(month, 10),
       });
 
       const data = response.data.reports;
-      ////////////////////////
-      console.log(response);
+
+      console.log(data);
 
       setChartData({
         labels: data.map((report) => report.date),
         datasets: [
           {
             label: "Sales",
-            data: data.map((report) => report.dailySale),
+            data: data.map((report) => report.totalSale),
             backgroundColor: "#ada282",
           },
         ],

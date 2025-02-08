@@ -1,14 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
-import authVerification from "../../custom-hooks/authVerification";
 import Hamburger from "../../components/Sidebar/Hamburger";
 import { toast } from "react-hot-toast";
 import { produce } from "immer";
 import { Link } from "@mui/material";
 
 const AddProduct = () => {
-  authVerification();
-
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
