@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Pie } from "react-chartjs-2";
 import axios from "axios";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const MonthlySaleComparison = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
+  const [isLoading, setIsLoading] = useState(true);
 
   const getPreviousMonth = (currentDate) => {
     const [year, month] = currentDate.split("-").map(Number);
@@ -46,15 +48,17 @@ const MonthlySaleComparison = ({ date }) => {
       );
 
       setChartData({
-        labels: [`${date} Sales`, `${prevDate} Sales`],
+        labels: [`${prevDate} Sales`, `${date} Sales`],
         datasets: [
           {
-            label: "Monthly Sales Comparison",
+            label: "Sales",
             data: [currentMonthSales, previousMonthSales],
             backgroundColor: ["#ada282", "#5c5c5c"],
           },
         ],
       });
+
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching sales data:", error);
     }
@@ -67,21 +71,38 @@ const MonthlySaleComparison = ({ date }) => {
   const options = {
     maintainAspectRatio: false,
     responsive: true,
+    plugins: {
+      legend: {
+        position: "right",
+        labels: {
+          boxWidth: 30,
+          padding: 10,
+        },
+      },
+    },
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <h2 className="flex flex-col text-center">
+    <div className="text-center flex flex-col w-full h-full p-2 gap-4">
+      <h2 className="flex flex-col text-xl">
         Monthly Sales Comparison
         <span>
           ({date} vs {getPreviousMonth(date)})
         </span>
       </h2>
-      <div>
-        {chartData.labels.length > 0 ? (
-          <Pie data={chartData} options={options} />
+      <div className="w-full h-full">
+        {isLoading ? (
+          <div className="w-full h-full flex justify-center items-center">
+            <CircularProgress color="inherit" />
+          </div>
         ) : (
-          <p>No data available</p>
+          <>
+            {chartData.labels.length > 0 ? (
+              <Pie data={chartData} options={options} />
+            ) : (
+              <p className="text-red-700">No sales available</p>
+            )}
+          </>
         )}
       </div>
     </div>

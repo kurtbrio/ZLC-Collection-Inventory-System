@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import axios from "axios";
 import { Chart as ChartJS } from "chart.js/auto";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const MonthlySaleByType = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchSalesReport = async () => {
     try {
@@ -44,6 +46,8 @@ const MonthlySaleByType = ({ date }) => {
           },
         ],
       });
+
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -68,13 +72,21 @@ const MonthlySaleByType = ({ date }) => {
   };
 
   return (
-    <div className="text-center flex flex-col w-full h-full p-2 gap-5">
-      <h2 className="text-xl">Monthly Sale By Type</h2>
+    <div className="text-center flex flex-col w-full h-full p-2 gap-4">
+      <h2 className="text-xl">Monthly Sales by Type</h2>
       <div className="w-full h-full">
-        {chartData.labels.length > 0 ? (
-          <Pie data={chartData} options={options} />
+        {isLoading ? (
+          <div className="w-full h-full flex justify-center items-center">
+            <CircularProgress color="inherit" />
+          </div>
         ) : (
-          <p>No data available</p>
+          <>
+            {chartData.labels.length > 0 ? (
+              <Pie data={chartData} options={options} />
+            ) : (
+              <p className="text-red-700">No sales available</p>
+            )}
+          </>
         )}
       </div>
     </div>

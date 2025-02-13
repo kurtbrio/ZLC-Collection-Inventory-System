@@ -41,13 +41,13 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.json({ error: "User doesn't exist" });
+      return res.json({ error: "Wrong email or password" });
     }
 
     const isPassMatch = await bcrypt.compare(password, user.password);
 
     if (!isPassMatch) {
-      return res.json({ error: "Password doesn't match" });
+      return res.json({ error: "Wrong email or password" });
     }
 
     jwt.sign(

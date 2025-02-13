@@ -51,7 +51,7 @@
 
 /* GLOBAL */
 * {
-  @apply ease-in-out delay-75 transition-all;
+  @apply ease-in-out duration-75 transition-all;
 }
 
 body {
@@ -96,17 +96,26 @@ input[type="file"] {
   cursor: pointer;
 }
 
+[type="date"]::-webkit-calendar-picker-indicator,
+[type="month"]::-webkit-calendar-picker-indicator,
+[type="year"]::-webkit-calendar-picker-indicator {
+  background-color: #ada282;
+  border-radius: 100%;
+  padding: 5px;
+  cursor: pointer;
+}
+
 /* REUSABLE */
 .btn-primary {
   @apply cursor-pointer py-1.5 rounded-full font-semibold hover:text-primary/80 border-white/20 border-[0.5px];
 }
 
 .container {
-  @apply w-screen max-h-screen overflow-y-scroll bg-container-bg/75 rounded-t-xl lg:rounded-t-none lg:rounded-tl-xl p-5 lg:pb-10 border-white/20 lg:border-[0.5px];
+  @apply w-screen h-full overflow-y-scroll bg-container-bg/75 rounded-t-xl lg:rounded-t-none lg:rounded-tl-xl p-5 lg:pb-10 border-white/20 lg:border-[0.5px];
 }
 
 .full {
-  @apply flex flex-col lg:flex-row lg:pt-10 bg-gradient-to-br from-container-bg to-highlight/30 lg:bg-main-bg;
+  @apply flex flex-col h-screen lg:flex-row lg:pt-10 bg-gradient-to-br from-container-bg to-highlight/30 lg:bg-main-bg;
 }
 
 .grid-item {
