@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import MonthlyReport from "./Monthly/MonthlyReport";
 import DailyReport from "./Daily/DailyReport";
+import YearlyReport from "./Yearly/YearlyReport";
 import Hamburger from "../../components/Sidebar/Hamburger";
 
 const Reports = () => {
-  const [date, setDate] = useState("daily");
+  const [date, setDate] = useState("monthly");
 
   return (
     <div className="full">
@@ -45,7 +46,7 @@ const Reports = () => {
           ) : date === "monthly" ? (
             <MonthlyReport />
           ) : date === "yearly" ? (
-            "yearly"
+            <YearlyReport />
           ) : (
             ""
           )}

@@ -1,62 +1,64 @@
 import React, { useEffect, useState } from "react";
+import { Chart as ChartJS } from "chart.js/auto";
 import { Pie } from "react-chartjs-2";
 import axios from "axios";
-import { Chart as ChartJS } from "chart.js/auto";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const MonthlySaleByType = ({ date }) => {
+const YearlySaleComparison = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchSalesReport = async () => {
+  const getPreviousYear = (year) => {
+    const prevYearDate = new Date(Date.UTC(year - 1, 0, 1))
+      .toISOString()
+      .slice(0, 4);
+
+    return prevYearDate;
+  };
+
+  const fetchSalesData = async () => {
     setIsLoading(true);
 
     try {
-      const [year, month] = date.split("-");
+      const prevYear = getPreviousYear(date);
 
-      const response = await axios.post("/api/reports/monthly", {
-        year: parseInt(year, 10),
-        month: parseInt(month, 10),
+      const responseCurrent = await axios.post("/api/reports/yearly", {
+        year: parseInt(date, 10),
       });
 
-      const data = response.data.reports;
+      const responsePrevious = await axios.post("/api/reports/yearly", {
+        year: parseInt(prevYear, 10),
+      });
 
-      const salesByType = data.reduce((acc, report) => {
-        for (const type in report.salesByType) {
-          if (!acc[type]) {
-            acc[type] = 0;
-          }
-          acc[type] += report.salesByType[type];
-        }
-        return acc;
-      }, {});
+      const currentYearSales = responseCurrent.data.reports.reduce(
+        (total, report) => total + report.totalSale,
+        0
+      );
+
+      const previousYearSales = responsePrevious.data.reports.reduce(
+        (total, report) => total + report.totalSale,
+        0
+      );
 
       setChartData({
-        labels: Object.keys(salesByType),
+        labels: [`${date} Sales`, `${prevYear} Sales`],
         datasets: [
           {
             label: "Sales",
-            data: Object.values(salesByType),
-            backgroundColor: [
-              "#ada282",
-              "#9c9275",
-              "#8b8168",
-              "#7a705b",
-              "#69604e",
-              "#5c5c5c",
-            ],
+            data: [currentYearSales, previousYearSales],
+            backgroundColor: ["#ada282", "#5c5c5c"],
           },
         ],
       });
 
       setIsLoading(false);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching sales data:", error);
     }
   };
 
   useEffect(() => {
-    fetchSalesReport();
+    fetchSalesData();
   }, [date]);
 
   const options = {
@@ -75,7 +77,7 @@ const MonthlySaleByType = ({ date }) => {
 
   return (
     <div className="text-center flex flex-col w-full h-full p-2 gap-4">
-      <h1 className="text-xl ">Monthly Sales by Type</h1>
+      <h1>Yearly Sales Comparison</h1>
       <div className="w-full h-full">
         {isLoading ? (
           <div className="w-full h-full flex justify-center items-center">
@@ -89,4 +91,4 @@ const MonthlySaleByType = ({ date }) => {
   );
 };
 
-export default MonthlySaleByType;
+export default YearlySaleComparison;

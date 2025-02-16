@@ -105,6 +105,24 @@ input[type="file"] {
   cursor: pointer;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ada282;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ada282;
+}
+
 /* REUSABLE */
 .btn-primary {
   @apply cursor-pointer py-1.5 rounded-full font-semibold hover:text-primary/80 border-white/20 border-[0.5px];

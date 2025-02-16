@@ -1,56 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Pie } from "react-chartjs-2";
-import axios from "axios";
-import CircularProgress from "@mui/material/CircularProgress";
+import { CircularProgress } from "@mui/material";
 
-const MonthlySaleComparison = ({ date }) => {
+const DailySaleComparison = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [isLoading, setIsLoading] = useState(true);
 
-  const getPreviousMonth = (currentDate) => {
-    const [year, month] = currentDate.split("-");
-    const prevMonthDate = new Date(Date.UTC(year, month - 2, 1))
+  const getPreviousDay = (currentDate) => {
+    const [year, month, day] = currentDate.split("-");
+    const getPrevDay = new Date(Date.UTC(year, month - 1, day - 1))
       .toISOString()
-      .slice(0, 7);
+      .split("T")[0];
 
-    return prevMonthDate;
+    return getPrevDay;
   };
 
   const fetchSalesData = async () => {
     setIsLoading(true);
 
     try {
-      const prevDate = getPreviousMonth(date);
-      const [currYear, currMonth] = date.split("-");
-      const [prevYear, prevMonth] = prevDate.split("-");
+      const yesterday = getPreviousDay(date);
+      const [currYear, currMonth, currDay] = date.split("-");
+      const [prevYear, prevMonth, prevDay] = yesterday.split("-");
 
-      const responseCurrent = await axios.post("/api/reports/monthly", {
+      const responseCurrent = await axios.post("/api/reports/daily", {
         year: parseInt(currYear, 10),
         month: parseInt(currMonth, 10),
+        day: parseInt(currDay, 10),
       });
 
-      const responsePrevious = await axios.post("/api/reports/monthly", {
+      const responsePrevious = await axios.post("/api/reports/daily", {
         year: parseInt(prevYear, 10),
         month: parseInt(prevMonth, 10),
+        day: parseInt(prevDay, 10),
       });
 
-      const currentMonthSales = responseCurrent.data.reports.reduce(
-        (total, report) => total + report.totalSale,
-        0
-      );
-
-      const previousMonthSales = responsePrevious.data.reports.reduce(
-        (total, report) => total + report.totalSale,
-        0
-      );
-
       setChartData({
-        labels: [`${date} Sales`, `${prevDate} Sales`],
+        labels: [`${date} Sales`, `${yesterday} Sales`],
         datasets: [
           {
             label: "Sales",
-            data: [currentMonthSales, previousMonthSales],
+            data: [
+              responseCurrent.data.totalSale,
+              responsePrevious.data.totalSale,
+            ],
             backgroundColor: ["#ada282", "#5c5c5c"],
           },
         ],
@@ -58,7 +53,7 @@ const MonthlySaleComparison = ({ date }) => {
 
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching sales data:", error);
+      console.log("Error fetching sales data:", error);
     }
   };
 
@@ -80,9 +75,13 @@ const MonthlySaleComparison = ({ date }) => {
     },
   };
 
+  const isNoDataAvailable =
+    !chartData.datasets[0]?.data ||
+    chartData.datasets[0]?.data.every((item) => item === 0);
+
   return (
     <div className="text-center flex flex-col w-full h-full p-2 gap-4">
-      <h1>Monthly Sales Comparison</h1>
+      <h1>Daily Sales Comparison</h1>
       <div className="w-full h-full">
         {isLoading ? (
           <div className="w-full h-full flex justify-center items-center">
@@ -96,4 +95,4 @@ const MonthlySaleComparison = ({ date }) => {
   );
 };
 
-export default MonthlySaleComparison;
+export default DailySaleComparison;

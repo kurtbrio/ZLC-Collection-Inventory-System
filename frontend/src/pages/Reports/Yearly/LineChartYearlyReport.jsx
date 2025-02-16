@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Chart as ChartJS } from "chart.js/auto";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const BarChartMonthlyReport = ({ date }) => {
+const LineChartYearlyReport = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchSalesReport = async () => {
-    try {
-      const [year, month] = date.split("-");
+    setIsLoading(true);
 
-      const response = await axios.post("/api/reports/monthly", {
-        year: parseInt(year, 10),
-        month: parseInt(month, 10),
+    try {
+      const response = await axios.post("/api/reports/yearly", {
+        year: parseInt(date, 10),
       });
 
-      const data = await response.data.reports;
+      const data = response.data.reports;
 
       setChartData({
-        labels: data.map((report) => report.date),
+        labels: data.map((report) => report.month),
         datasets: [
           {
             label: "Sales",
             data: data.map((report) => report.totalSale),
             backgroundColor: "#ada282",
+            borderColor: "#ada282",
           },
         ],
       });
@@ -43,34 +43,39 @@ const BarChartMonthlyReport = ({ date }) => {
   const options = {
     maintainAspectRatio: false,
     responsive: true,
+    scales: {
+      x: {
+        grid: {
+          color: "#f1f1f1",
+        },
+      },
+      y: {
+        grid: {
+          color: "#f1f1f1",
+        },
+      },
+    },
+    elements: {
+      line: {
+        tension: 0.3,
+      },
+    },
   };
 
   return (
     <div className="text-center flex flex-col w-full h-full p-2 gap-4">
-      <h1>
-        Sales of{" "}
-        {new Date(date).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-        })}
-      </h1>
+      <h1>Sales of {date}</h1>
       <div className="w-full h-full">
         {isLoading ? (
           <div className="w-full h-full flex justify-center items-center">
             <CircularProgress color="inherit" />
           </div>
         ) : (
-          <>
-            {chartData.labels.length > 0 ? (
-              <Bar data={chartData} options={options} />
-            ) : (
-              <p className="text-red-700">No sales available</p>
-            )}
-          </>
+          <Line data={chartData} options={options} />
         )}
       </div>
     </div>
   );
 };
 
-export default BarChartMonthlyReport;
+export default LineChartYearlyReport;

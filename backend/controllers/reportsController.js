@@ -20,7 +20,7 @@ exports.getDailyReport = async (req, res) => {
 
     const saleByType = {};
 
-    dailyData.map((sale) => {
+    dailyData.forEach((sale) => {
       const { type } = sale.product;
 
       if (!saleByType[type]) {
@@ -29,10 +29,9 @@ exports.getDailyReport = async (req, res) => {
 
       saleByType[type] += sale.totalPrice;
     });
-
     return res.status(200).json({ totalSale, saleByType });
   } catch (error) {
-    return res.status(400).json({ error: "Server Error" });
+    return res.status(500).json({ error: "Server Error" });
   }
 };
 
@@ -47,43 +46,95 @@ exports.getMonthlyReport = async (req, res) => {
       const start = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
       const end = new Date(Date.UTC(year, month - 1, day, 23, 59, 59, 999));
 
-      const data = await Sales.find({
+      const dailyData = await Sales.find({
         date: { $gte: start, $lte: end },
       }).populate("product");
 
-      const dailyReport = { totalSale: 0, salesByType: {} };
+      let totalSale = 0;
+      const salesByType = {};
 
-      data.map((sale) => {
+      dailyData.forEach((sale) => {
         const { type } = sale.product;
 
-        if (!dailyReport.salesByType[type]) {
-          dailyReport.salesByType[type] = { totalPrice: 0, totalQuantity: 0 };
+        if (!salesByType[type]) {
+          salesByType[type] = 0;
         }
 
-        dailyReport.salesByType[type].totalPrice += sale.totalPrice;
-        dailyReport.salesByType[type].totalQuantity += sale.sizes.reduce(
-          (sum, size) => sum + size.quantity,
-          0
-        );
-
-        dailyReport.totalSale += sale.totalPrice;
+        salesByType[type] += sale.totalPrice;
+        totalSale += sale.totalPrice;
       });
 
       reports.push({
         date: start.toISOString().split("T")[0],
-        totalSale: dailyReport.totalSale,
-        salesByType: dailyReport.salesByType,
+        totalSale,
+        salesByType,
       });
     }
 
     return res.status(200).json({ reports });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ error: "Server Error" });
+    return res.status(500).json({ error: "Server Error" });
   }
 };
 
-exports.getYearlyReport = async (req, res) => {};
+exports.getYearlyReport = async (req, res) => {
+  const { year } = req.body;
+  const reports = [];
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  try {
+    for (let month = 0; month < 12; month++) {
+      const firstDayOfMonth = new Date(Date.UTC(year, month, 1, 0, 0, 0, 0));
+      const lastDayOfMonth = new Date(
+        Date.UTC(year, month + 1, 0, 23, 59, 59, 999)
+      );
+
+      const salesData = await Sales.find({
+        date: { $gte: firstDayOfMonth, $lte: lastDayOfMonth },
+      }).populate("product");
+
+      let totalSale = 0;
+      const salesByType = {};
+
+      salesData.forEach((sale) => {
+        const { type } = sale.product;
+
+        if (!salesByType[type]) {
+          salesByType[type] = 0;
+        }
+
+        salesByType[type] += sale.totalPrice;
+        totalSale += sale.totalPrice;
+      });
+
+      reports.push({
+        month: monthNames[month],
+        totalSale,
+        salesByType,
+      });
+    }
+
+    return res.status(200).json({ reports });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Server Error" });
+  }
+};
 
 exports.getTopSellers = async (req, res) => {
   const { year, month, day } = req.body;
@@ -134,6 +185,31 @@ exports.getTopSellers = async (req, res) => {
     const topSellers = productSales.slice(0, 5);
     return res.status(200).json({ topSellers });
   } catch (error) {
-    return res.status(400).json({ error: "Server Error" });
+    return res.status(500).json({ error: "Server Error" });
+  }
+};
+
+exports.hasSales = async (req, res) => {
+  const { year, month, day } = req.body;
+
+  try {
+    if (!month && !day) {
+      start = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0));
+      end = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 999));
+    } else if (!day) {
+      start = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
+      end = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
+    } else {
+      start = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
+      end = new Date(Date.UTC(year, month - 1, day, 23, 59, 59, 999));
+    }
+
+    const salesExist = await Sales.exists({
+      date: { $gte: start, $lte: end },
+    });
+
+    return res.json({ hasSales: !!salesExist });
+  } catch (error) {
+    return res.status(500).json({ error: "Server Error" });
   }
 };

@@ -1,8 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BarChartDailyReport from "./BarChartDailyReport";
+import DailySaleComparison from "./DailySaleComparison";
+import DailyTopSellers from "./DailyTopSellers";
+import { CircularProgress } from "@mui/material";
+import axios from "axios";
 
 const DailyReport = () => {
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [hasSales, setHasSales] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const [year, month, day] = date.split("-");
+
+      const response = await axios.post("/api/reports/hasSales", {
+        year: parseInt(year, 10),
+        month: parseInt(month, 10),
+        day: parseInt(day, 10),
+      });
+
+      setHasSales(response.data.hasSales);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [date]);
 
   return (
     <div className="flex flex-col gap-5">
@@ -12,14 +40,31 @@ const DailyReport = () => {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
+          max={new Date().toISOString().slice(0, 10)}
         />
       </form>
 
-      <div className="grid grid-cols-3">
-        <div className="grid-item col-span-3 ">
-          <BarChartDailyReport date={date} />
+      {isLoading ? (
+        <div className="w-full h-full flex justify-center items-center">
+          <CircularProgress color="inherit" />
         </div>
-      </div>
+      ) : hasSales ? (
+        <div className="grid grid-cols-3 gap-5">
+          <div className="grid-item col-span-3">
+            <BarChartDailyReport date={date} />
+          </div>
+          <div className="grid-item col-span-3 lg:col-span-1">
+            <DailySaleComparison date={date} />
+          </div>
+          <div className="grid-item col-span-3 lg:col-span-1">
+            <DailyTopSellers date={date} />
+          </div>
+        </div>
+      ) : (
+        <p className="text-red-700 text-center">
+          No data available. Try selecting a different date range.
+        </p>
+      )}
     </div>
   );
 };

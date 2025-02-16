@@ -8,49 +8,62 @@ const BarChartDailyReport = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchDaily = async () => {
     const [year, month, day] = date.split("-");
 
-    const fetchDaily = async () => {
-      try {
-        const response = await axios.post("/api/reports/daily", {
-          year: parseInt(year, 10),
-          month: parseInt(month, 10),
-          day: parseInt(day, 10),
-        });
+    try {
+      const response = await axios.post("/api/reports/daily", {
+        year: parseInt(year, 10),
+        month: parseInt(month, 10),
+        day: parseInt(day, 10),
+      });
 
-        const data = await response.data.saleByType;
+      const data = response.data.saleByType;
 
-        setChartData({
-          labels: Object.keys(data),
-          datasets: [
-            {
-              label: "Sales",
-              data: Object.values(data),
-              backgroundColor: [
-                "#ada282",
-                "#9c9275",
-                "#8b8168",
-                "#7a705b",
-                "#69604e",
-                "#5c5c5c",
-              ],
-            },
-          ],
-        });
+      setChartData({
+        labels: Object.keys(data),
+        datasets: [
+          {
+            label: "Sales",
+            data: Object.values(data),
+            backgroundColor: [
+              "#ada282",
+              "#9c9275",
+              "#8b8168",
+              "#7a705b",
+              "#69604e",
+              "#5c5c5c",
+            ],
+          },
+        ],
+      });
 
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
     fetchDaily();
+    setIsLoading(true);
   }, [date]);
 
   const options = {
     maintainAspectRatio: false,
     responsive: true,
+    scales: {
+      x: {
+        grid: {
+          color: "#f1f1f1",
+        },
+      },
+      y: {
+        grid: {
+          color: "#f1f1f1",
+        },
+      },
+    },
   };
 
   return (
@@ -69,13 +82,7 @@ const BarChartDailyReport = ({ date }) => {
             <CircularProgress color="inherit" />
           </div>
         ) : (
-          <>
-            {chartData.labels.length > 0 ? (
-              <Bar data={chartData} options={options} />
-            ) : (
-              <p className="text-red-700">No sales available</p>
-            )}
-          </>
+          <Bar data={chartData} options={options} />
         )}
       </div>
     </div>

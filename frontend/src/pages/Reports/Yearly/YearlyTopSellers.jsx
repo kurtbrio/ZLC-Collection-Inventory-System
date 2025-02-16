@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const MonthlyTopSellers = ({ date }) => {
+const YearlyTopSellers = ({ date }) => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -10,11 +10,8 @@ const MonthlyTopSellers = ({ date }) => {
     setIsLoading(true);
 
     try {
-      const [year, month] = date.split("-");
-
       const response = await axios.post("/api/reports/top", {
-        year: parseInt(year, 10),
-        month: parseInt(month, 10),
+        year: parseInt(date, 10),
       });
 
       setProducts(response.data.topSellers);
@@ -74,4 +71,4 @@ const MonthlyTopSellers = ({ date }) => {
   );
 };
 
-export default MonthlyTopSellers;
+export default YearlyTopSellers;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Hamburger from "../../components/Sidebar/Hamburger";
-import { Button } from "@mui/material";
+import { Link } from "@mui/material";
 
 const ViewSale = () => {
   const navigate = useNavigate();
@@ -35,22 +35,20 @@ const ViewSale = () => {
 
   return (
     <>
-      <Hamburger />
+      <div className="full">
+        <Hamburger />
 
-      <Button
-        onClick={() => {
-          navigate("/sales");
-        }}
-      >
-        Go Back..
-      </Button>
+        <div className="container">
+          <Link href="/sales">Go Back</Link>
 
-      <button
-        className="underline "
-        onClick={() => navigate(`product/${sale.product}`)}
-      >
-        {sale.productName}
-      </button>
+          <button
+            className=""
+            onClick={() => navigate(`product/${sale.product}`)}
+          >
+            {sale.productName}
+          </button>
+        </div>
+      </div>
     </>
   );
 };

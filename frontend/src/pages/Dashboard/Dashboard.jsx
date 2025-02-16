@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Hamburger from "../../components/Sidebar/Hamburger";
-import BarChartMonthlyReport from "../Reports/Monthly/BarChartMonthlyReport";
+import LineChartMonthlyReport from "../Reports/Monthly/LineChartMonthlyReport";
 
 const Dashboard = () => {
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 7));
@@ -12,9 +12,7 @@ const Dashboard = () => {
         <div className="container">
           <h1 className="text-xl">Dashboard</h1>
 
-          <div>
-            <BarChartMonthlyReport date={date} />
-          </div>
+          <div>{/* <BarChartMonthlyReport date={date} /> */}</div>
         </div>
       </div>
     </>

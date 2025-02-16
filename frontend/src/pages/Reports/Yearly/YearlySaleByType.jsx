@@ -4,7 +4,7 @@ import axios from "axios";
 import { Chart as ChartJS } from "chart.js/auto";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const MonthlySaleByType = ({ date }) => {
+const YearlySaleByType = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -12,11 +12,8 @@ const MonthlySaleByType = ({ date }) => {
     setIsLoading(true);
 
     try {
-      const [year, month] = date.split("-");
-
-      const response = await axios.post("/api/reports/monthly", {
-        year: parseInt(year, 10),
-        month: parseInt(month, 10),
+      const response = await axios.post("/api/reports/yearly", {
+        year: parseInt(date, 10),
       });
 
       const data = response.data.reports;
@@ -75,7 +72,7 @@ const MonthlySaleByType = ({ date }) => {
 
   return (
     <div className="text-center flex flex-col w-full h-full p-2 gap-4">
-      <h1 className="text-xl ">Monthly Sales by Type</h1>
+      <h1 className="text-xl">Yearly Sales by Type</h1>
       <div className="w-full h-full">
         {isLoading ? (
           <div className="w-full h-full flex justify-center items-center">
@@ -89,4 +86,4 @@ const MonthlySaleByType = ({ date }) => {
   );
 };
 
-export default MonthlySaleByType;
+export default YearlySaleByType;

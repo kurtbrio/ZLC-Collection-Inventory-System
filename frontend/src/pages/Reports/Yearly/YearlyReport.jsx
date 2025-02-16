@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from "react";
-import LineChartMonthlyReport from "./LineChartMonthlyReport";
-import MonthlySaleComparison from "./MonthlySaleComparison";
-import MonthlySaleByType from "./MonthlySaleByType";
-import MonthlyTopSellers from "./MonthlyTopSellers";
+import LineChartYearlyReport from "./LineChartYearlyReport";
+import YearlySaleComparison from "./YearlySaleComparison";
+import YearlySaleByType from "./YearlySaleByType";
+import YearlyTopSellers from "./YearlyTopSellers";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 
-const MonthlyReport = () => {
-  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 7));
+const YearlyReport = () => {
+  const [date, setDate] = useState(new Date().getFullYear());
   const [hasSales, setHasSales] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const incrementYear = () => {
+    setDate((prev) => Math.min(prev + 1, new Date().getFullYear()));
+  };
+
+  const decrementYear = () => {
+    setDate((prev) => prev - 1);
+  };
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const [year, month] = date.split("-");
-
       const response = await axios.post("/api/reports/hasSales", {
-        year: parseInt(year, 10),
-        month: parseInt(month, 10),
+        year: parseInt(date, 10),
       });
 
       setHasSales(response.data.hasSales);
@@ -36,13 +41,28 @@ const MonthlyReport = () => {
     <>
       <div className="flex flex-col gap-5">
         <form className="flex items-center gap-5">
-          <label className="text-highlight">Monthly</label>
+          <label className="text-highlight">Yearly</label>
+
+          <button
+            type="button"
+            onClick={decrementYear}
+            className="w-6 h-6 rounded-full flex justify-center items-center border-white/20 border-1"
+          >
+            -
+          </button>
           <input
-            type="month"
+            type="number"
             value={date}
-            onChange={(e) => setDate(e.target.value)}
-            max={new Date().toISOString().slice(0, 7)}
+            readOnly
+            className="text-center w-30"
           />
+          <button
+            type="button"
+            onClick={incrementYear}
+            className="w-6 h-6 rounded-full flex justify-center items-center border-white/20 border-1"
+          >
+            +
+          </button>
         </form>
 
         {isLoading ? (
@@ -52,16 +72,16 @@ const MonthlyReport = () => {
         ) : hasSales ? (
           <div className="grid grid-cols-3 gap-5">
             <div className="grid-item col-span-3">
-              <LineChartMonthlyReport date={date} />
+              <LineChartYearlyReport date={date} />
             </div>
             <div className="grid-item col-span-3 lg:col-span-1">
-              <MonthlySaleComparison date={date} />
+              <YearlySaleComparison date={date} />
             </div>
             <div className="grid-item col-span-3 lg:col-span-1">
-              <MonthlySaleByType date={date} />
+              <YearlySaleByType date={date} />
             </div>
             <div className="grid-item col-span-3 lg:col-span-1">
-              <MonthlyTopSellers date={date} />
+              <YearlyTopSellers date={date} />
             </div>
           </div>
         ) : (
@@ -74,4 +94,4 @@ const MonthlyReport = () => {
   );
 };
 
-export default MonthlyReport;
+export default YearlyReport;

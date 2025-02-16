@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Hamburger from "../../components/Sidebar/Hamburger";
+import { Link } from "@mui/material";
 
 const ViewProduct = () => {
   const { id } = useParams();
@@ -39,10 +40,16 @@ const ViewProduct = () => {
 
   return (
     <>
-      <div id="full">
+      <div className="full">
         <Hamburger />
 
-        <div id="container">
+        <div className="container">
+          <Link href="/products">Go back</Link>
+          <h1>{product.name}</h1>
+          <h1>{product.name}</h1>
+          <h1>{product.name}</h1>
+          <h1>{product.name}</h1>
+          <h1>{product.name}</h1>
           <h1>{product.name}</h1>
         </div>
       </div>

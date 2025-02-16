@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Pie } from "react-chartjs-2";
-import axios from "axios";
 import { Chart as ChartJS } from "chart.js/auto";
+import { Line } from "react-chartjs-2";
+import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const MonthlySaleByType = ({ date }) => {
+const LineChartMonthlyReport = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -21,37 +21,21 @@ const MonthlySaleByType = ({ date }) => {
 
       const data = response.data.reports;
 
-      const salesByType = data.reduce((acc, report) => {
-        for (const type in report.salesByType) {
-          if (!acc[type]) {
-            acc[type] = 0;
-          }
-          acc[type] += report.salesByType[type];
-        }
-        return acc;
-      }, {});
-
       setChartData({
-        labels: Object.keys(salesByType),
+        labels: data.map((report) => report.date),
         datasets: [
           {
             label: "Sales",
-            data: Object.values(salesByType),
-            backgroundColor: [
-              "#ada282",
-              "#9c9275",
-              "#8b8168",
-              "#7a705b",
-              "#69604e",
-              "#5c5c5c",
-            ],
+            data: data.map((report) => report.totalSale),
+            backgroundColor: "#ada282",
+            borderColor: "#ada282",
           },
         ],
       });
 
       setIsLoading(false);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -62,31 +46,45 @@ const MonthlySaleByType = ({ date }) => {
   const options = {
     maintainAspectRatio: false,
     responsive: true,
-    plugins: {
-      legend: {
-        position: "right",
-        labels: {
-          boxWidth: 30,
-          padding: 10,
+    scales: {
+      x: {
+        grid: {
+          color: "#f1f1f1",
         },
+      },
+      y: {
+        grid: {
+          color: "#f1f1f1",
+        },
+      },
+    },
+    elements: {
+      line: {
+        tension: 0.3,
       },
     },
   };
 
   return (
     <div className="text-center flex flex-col w-full h-full p-2 gap-4">
-      <h1 className="text-xl ">Monthly Sales by Type</h1>
+      <h1>
+        Sales of{" "}
+        {new Date(date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+        })}
+      </h1>
       <div className="w-full h-full">
         {isLoading ? (
           <div className="w-full h-full flex justify-center items-center">
             <CircularProgress color="inherit" />
           </div>
         ) : (
-          <Pie data={chartData} options={options} />
+          <Line data={chartData} options={options} />
         )}
       </div>
     </div>
   );
 };
 
-export default MonthlySaleByType;
+export default LineChartMonthlyReport;
