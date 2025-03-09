@@ -71,16 +71,16 @@ const YearlyReport = () => {
           </div>
         ) : hasSales ? (
           <div className="grid grid-cols-3 gap-5">
-            <div className="grid-item col-span-3">
+            <div className="grid-item col-span-3 ">
               <LineChartYearlyReport date={date} />
             </div>
-            <div className="grid-item col-span-3 lg:col-span-1">
+            <div className="grid-item col-span-3 lg:col-span-1 h-72">
               <YearlySaleComparison date={date} />
             </div>
-            <div className="grid-item col-span-3 lg:col-span-1">
+            <div className="grid-item col-span-3 lg:col-span-1 h-72">
               <YearlySaleByType date={date} />
             </div>
-            <div className="grid-item col-span-3 lg:col-span-1">
+            <div className="grid-item col-span-3 lg:col-span-1 h-72">
               <YearlyTopSellers date={date} />
             </div>
           </div>

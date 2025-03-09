@@ -27,7 +27,9 @@ const YearlyTopSellers = ({ date }) => {
 
   return (
     <div className="text-center flex flex-col p-2 gap-4 w-full h-full overflow-hidden overflow-y-scroll">
-      <h1>Top Selling Products</h1>
+      <div className="text-xl">
+        {date} <p>Top Selling Products</p>
+      </div>
       {isLoading ? (
         <div className="w-full h-full flex justify-center items-center">
           <CircularProgress color="inherit" />

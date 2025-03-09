@@ -31,10 +31,10 @@ exports.getProductSales = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const sales = Sales.find({ product: id });
+    const sales = await Sales.find({ product: id });
 
     if (!sales) {
-      return res.json({ error: "Sale not found" });
+      return res.json({ error: "No sales found" });
     }
 
     return res.status(200).json({ sales });

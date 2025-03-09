@@ -54,13 +54,13 @@ const MonthlyReport = () => {
             <div className="grid-item col-span-3">
               <LineChartMonthlyReport date={date} />
             </div>
-            <div className="grid-item col-span-3 lg:col-span-1">
+            <div className="grid-item col-span-3 lg:col-span-1 h-72">
               <MonthlySaleComparison date={date} />
             </div>
-            <div className="grid-item col-span-3 lg:col-span-1">
+            <div className="grid-item col-span-3 lg:col-span-1 h-72">
               <MonthlySaleByType date={date} />
             </div>
-            <div className="grid-item col-span-3 lg:col-span-1">
+            <div className="grid-item col-span-3 lg:col-span-1 h-72">
               <MonthlyTopSellers date={date} />
             </div>
           </div>

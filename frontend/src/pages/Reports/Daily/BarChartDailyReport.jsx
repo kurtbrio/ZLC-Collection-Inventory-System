@@ -76,7 +76,7 @@ const BarChartDailyReport = ({ date }) => {
           day: "numeric",
         })}
       </h1>
-      <div className="w-full h-full ">
+      <div className="w-full h-full">
         {isLoading ? (
           <div className="w-full h-full flex justify-center items-center">
             <CircularProgress color="inherit" />

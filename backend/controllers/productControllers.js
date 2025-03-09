@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const Sales = require("../models/sales");
 const fs = require("fs");
 
 exports.getProducts = async (req, res) => {
@@ -125,6 +126,16 @@ exports.deleteProduct = async (req, res) => {
 
     if (!product) {
       return res.json({ error: "Product not found" });
+    }
+
+    const salesCount = await Sales.find({
+      product: productId,
+    });
+
+    if (salesCount.length > 0) {
+      return res
+        .status(400)
+        .json({ error: "Cannot delete product with sales records." });
     }
 
     if (product.imageUrl) {

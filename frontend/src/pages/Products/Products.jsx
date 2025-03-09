@@ -69,7 +69,7 @@ const Products = () => {
         prevProducts.filter((product) => product._id !== id)
       );
     } catch (error) {
-      toast.error("Failed to delete product. Please try again.");
+      toast.error(error.response.data.error);
       console.log(error);
     }
   };

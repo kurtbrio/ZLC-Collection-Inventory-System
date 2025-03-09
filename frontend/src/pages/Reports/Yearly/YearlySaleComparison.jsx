@@ -7,6 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 const YearlySaleComparison = ({ date }) => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [isLoading, setIsLoading] = useState(true);
+  const [percentageDiff, setPercentageDiff] = useState(null);
 
   const getPreviousYear = (year) => {
     const prevYearDate = new Date(Date.UTC(year - 1, 0, 1))
@@ -40,6 +41,17 @@ const YearlySaleComparison = ({ date }) => {
         0
       );
 
+      const calculatePercentDiff = (newVal, oldVal) => {
+        if (oldVal === 0) {
+          return setPercentageDiff(100);
+        }
+
+        const percentChange = ((newVal - oldVal) / oldVal) * 100;
+        return setPercentageDiff(percentChange.toFixed(2));
+      };
+
+      calculatePercentDiff(currentYearSales, previousYearSales);
+
       setChartData({
         labels: [`${date} Sales`, `${prevYear} Sales`],
         datasets: [
@@ -66,7 +78,7 @@ const YearlySaleComparison = ({ date }) => {
     responsive: true,
     plugins: {
       legend: {
-        position: "right",
+        position: "bottom",
         labels: {
           boxWidth: 30,
           padding: 10,
@@ -76,8 +88,20 @@ const YearlySaleComparison = ({ date }) => {
   };
 
   return (
-    <div className="text-center flex flex-col w-full h-full p-2 gap-4">
-      <h1>Yearly Sales Comparison</h1>
+    <div className="text-center items-center flex flex-col w-full h-full p-2 gap-4">
+      <div>
+        <h1>Yearly Sales Comparison</h1>
+        {isLoading ? (
+          ""
+        ) : (
+          <h2
+            className={percentageDiff > 0 ? "text-green-500" : "text-red-500"}
+          >
+            {percentageDiff > 0 ? "+" : ""}
+            {percentageDiff + "%"}
+          </h2>
+        )}
+      </div>
       <div className="w-full h-full">
         {isLoading ? (
           <div className="w-full h-full flex justify-center items-center">

@@ -53,10 +53,10 @@ const DailyReport = () => {
           <div className="grid-item col-span-3">
             <BarChartDailyReport date={date} />
           </div>
-          <div className="grid-item col-span-3 lg:col-span-1">
+          <div className="grid-item col-span-3 lg:col-span-1 h-72">
             <DailySaleComparison date={date} />
           </div>
-          <div className="grid-item col-span-3 lg:col-span-1">
+          <div className="grid-item col-span-3 lg:col-span-1 h-72">
             <DailyTopSellers date={date} />
           </div>
         </div>

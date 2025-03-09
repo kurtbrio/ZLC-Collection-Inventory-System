@@ -10,7 +10,7 @@ const {
 
 router.get("/", getSales);
 router.get("/:id", getSale);
-router.get("product/:id", getProductSales);
+router.get("/product/:id", getProductSales);
 router.post("/", addSale);
 router.delete("/:id", deleteSale);
 

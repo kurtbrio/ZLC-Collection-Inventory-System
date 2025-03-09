@@ -21,6 +21,13 @@ exports.getDailyReport = async (req, res) => {
     const saleByType = {};
 
     dailyData.forEach((sale) => {
+      if (!sale.product) {
+        console.warn(
+          `Warning: Sale with ID ${sale._id} has a missing product reference.`
+        );
+        return;
+      }
+
       const { type } = sale.product;
 
       if (!saleByType[type]) {
@@ -54,6 +61,13 @@ exports.getMonthlyReport = async (req, res) => {
       const salesByType = {};
 
       dailyData.forEach((sale) => {
+        if (!sale.product) {
+          console.warn(
+            `Warning: Sale with ID ${sale._id} has a missing product reference.`
+          );
+          return;
+        }
+
         const { type } = sale.product;
 
         if (!salesByType[type]) {
@@ -112,6 +126,13 @@ exports.getYearlyReport = async (req, res) => {
       const salesByType = {};
 
       salesData.forEach((sale) => {
+        if (!sale.product) {
+          console.warn(
+            `Warning: Sale with ID ${sale._id} has a missing product reference.`
+          );
+          return;
+        }
+
         const { type } = sale.product;
 
         if (!salesByType[type]) {
@@ -160,6 +181,13 @@ exports.getTopSellers = async (req, res) => {
     }).populate("product");
 
     data.forEach((sale) => {
+      if (!sale.product) {
+        console.warn(
+          `Warning: Sale with ID ${sale._id} has a missing product reference.`
+        );
+        return;
+      }
+
       const quantitySold = sale.sizes.reduce((sum, size) => {
         return sum + size.quantity;
       }, 0);

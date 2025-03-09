@@ -137,5 +137,5 @@ input[type="file"] {
 }
 
 .grid-item {
-  @apply flex justify-center items-center p-2.5 border-white/20 lg:border-[0.5px] rounded-xl bg-main-bg h-72;
+  @apply flex justify-center items-center p-2.5 border-white/20 lg:border-[0.5px] rounded-xl bg-main-bg;
 }
